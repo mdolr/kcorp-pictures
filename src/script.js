@@ -40,14 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
     return false;
   };
 
-  setTimeout(() => {
+  document.getElementById('download').addEventListener('click', () => {
     var a = document.createElement('a');
     a.href = canvas.toDataURL('image/jpeg', 1.0);
-    a.download = 'image.png';
+    a.download = 'pp_kcorp.png';
+
     document.body.appendChild(a);
+
     a.click();
-    console.log(canvas);
-  }, 1000);
+  });
 });
 
 /*
