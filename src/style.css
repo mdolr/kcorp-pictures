@@ -24,7 +24,7 @@ html {
 
 .canvas-container {
   position: relative !important;
-  border: solid 2px black;
+  border: solid 2px #102337;
   margin: auto !important;
   max-width: 502px !important;
   max-height: 502px !important;
@@ -32,4 +32,27 @@ html {
   width: 502px !important;
   min-height: 502px !important;
   min-width: 502px !important;
+}
+
+.instructions,
+.stickers {
+  max-width: 502px;
+  width: 502px;
+  margin: auto !important;
+}
+
+.instructions h5 {
+  margin-bottom: 6px !important;
+  margin-top: 6px !important;
+}
+
+.sticker button {
+  margin-top: 12px;
+}
+
+#download {
+  background-color: #102337 !important;
+  color: white !important;
+  width: 502px;
+  max-width: 502px;
 }

@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = new fabric.Canvas('canvas');
+  document.getElementById('canvas').fabric = canvas;
+
   canvas.setHeight(496);
   canvas.setWidth(496);
 
