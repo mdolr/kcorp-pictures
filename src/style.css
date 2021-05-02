@@ -1,0 +1,35 @@
+body,
+html {
+  padding: 24px !important;
+  text-align: center !important;
+}
+
+.title {
+  font-family: 'Poppins' !important;
+}
+
+.upload {
+  max-width: 496px !important;
+  max-height: 496px !important;
+  height: 496px !important;
+  width: 496px !important;
+  /*background-color: #cecece;*/
+  margin: auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 24px;
+}
+
+.canvas-container {
+  position: relative !important;
+  border: solid 2px black;
+  margin: auto !important;
+  max-width: 502px !important;
+  max-height: 502px !important;
+  height: 502px !important;
+  width: 502px !important;
+  min-height: 502px !important;
+  min-width: 502px !important;
+}

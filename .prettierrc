@@ -1,0 +1,5 @@
+{
+  "trailingComma": "none",
+  "singleQuote": true,
+  "no-multiple-empty-lines": false
+}
