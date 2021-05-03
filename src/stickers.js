@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       name: 'Logo Karmine Corp',
       url: 'assets/logo_karmine.png',
+      author: 'Karmine corp',
+      authorURL: 'https://karminecorp.fr',
       background: 'is-info',
       height: 64,
       width: 64
@@ -26,7 +28,21 @@ document.addEventListener('DOMContentLoaded', () => {
     stickerAddButton.addEventListener('click', () => {
       fabric.Image.fromURL(sticker.url, (img) => {
         img.scaleToWidth(496);
+        img.id = randomID();
         canvas.add(img);
+
+        addLayer(canvas, `Sticker ${sticker.name}`, img.id);
+
+        document.getElementById('tab-selector-edit').className = '';
+        document.getElementById('tab-selector-stickers').className = '';
+        document.getElementById('tab-selector-tutorial').className = '';
+
+        document.getElementById('edit-tab').className = 'hidden';
+        document.getElementById('stickers-tab').className = 'hidden';
+        document.getElementById('tutorial-tab').className = 'hidden';
+
+        document.getElementById('edit-tab').className = '';
+        document.getElementById('tab-selector-edit').className = 'is-active';
       });
     });
 

@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   fabric.Image.fromURL('assets/blue_wall.jpg', (img) => {
     img.scaleToWidth(496);
     img.selectable = false;
+    img.id = 'blue_wall';
+
     canvas.add(img);
   });
 
@@ -32,7 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
         fabric.Image.fromObject(image, (img) => {
           img.scaleToHeight(496);
           img.scaleToWidth(496);
+          img.id = randomID();
+
           canvas.add(img);
+
+          addLayer(canvas, `Image importée`, img.id);
         });
       };
     };
@@ -51,62 +57,116 @@ document.addEventListener('DOMContentLoaded', () => {
 
     a.click();
   });
+
+  document.getElementById('deselect').addEventListener('click', () => {
+    canvas.discardActiveObject().renderAll();
+  });
 });
 
-/*
+// https://stackoverflow.com/a/8084248
+const randomID = () => {
+  return Math.random().toString(36).substring(7);
+};
 
-  const canvas = document.getElementById('canvas');
-  const context = canvas.getContext('2d');
+const getObjectById = (canvas, id) => {
+  return canvas.getObjects().filter((object) => {
+    return object.id == id;
+  }).length
+    ? canvas.getObjects().filter((object) => {
+        return object.id == id;
+      })[0]
+    : null;
+};
 
-  canvas.ondragover = (e) => {
-    e.preventDefault();
-    return false;
-  };
+const addLayer = (canvas, imageName, imageID) => {
+  const container = document.createElement('div');
+  container.className = 'box has-text-left';
+  container.id = `layer-row-${imageID}`;
 
-  canvas.ondrop = (e) => {
-    e.preventDefault();
+  const arrowUpContainer = document.createElement('span');
+  arrowUpContainer.className = 'icon';
 
-    const file = e.dataTransfer.files[0];
-    const reader = new FileReader();
+  arrowUpContainer.addEventListener('click', () => {
+    canvas.discardActiveObject().renderAll();
+    const item = getObjectById(canvas, imageID);
+    canvas.bringForward(item, true);
+    canvas.discardActiveObject().renderAll();
 
-    reader.onload = (event) => {
-      const image = new Image();
+    console.log(container, container.previousSibling);
 
-      image.src = event.target.result;
+    if (container.previousSibling) {
+      const previousSibling = container.previousSibling;
+      document.getElementById('layers').removeChild(container);
+      document
+        .getElementById('layers')
+        .insertBefore(container, previousSibling);
+    }
+  });
 
-      image.onload = (event) => {
-        context.height = canvas.height = image.height;
-        context.width = canvas.width = image.width;
+  const arrowUp = document.createElement('i');
+  arrowUp.className = 'fa fa-arrow-up';
 
-        if (image.height >= 496 || image.width >= 496) {
-          context.drawImage(
-            image,
-            0,
-            0,
-            496,
-            496,
-            0,
-            0,
-            image.width,
-            image.height
-          );
-        } else {
-          context.drawImage(image, 0, 0);
-        }
-      };
-    };
+  arrowUpContainer.appendChild(arrowUp);
 
-    reader.readAsDataURL(file);
+  const arrowDownContainer = document.createElement('span');
+  arrowDownContainer.className = 'icon';
 
-    return false;
-  };
-});*/
+  arrowDownContainer.addEventListener('click', () => {
+    canvas.discardActiveObject().renderAll();
+    const item = getObjectById(canvas, imageID);
+    canvas.sendBackwards(item, true);
 
-/*var context,
-  image,
-  canvas = null;
+    const blueWall = getObjectById(canvas, 'blue_wall');
+    canvas.sendToBack(blueWall);
+    canvas.discardActiveObject().renderAll();
 
-document.addEventListener('DOMContentLoaded', () => {
-  /* Image input
-   * https://jsfiddle.net/JKirchartz/E4yRv/
-   */
+    if (container.nextSibling) {
+      const nextSibling = container.nextSibling;
+      document.getElementById('layers').removeChild(container.nextSibling);
+      document.getElementById('layers').insertBefore(nextSibling, container);
+    }
+  });
+
+  const arrowDown = document.createElement('i');
+  arrowDown.className = 'fa fa-arrow-down';
+
+  arrowDownContainer.appendChild(arrowDown);
+
+  const arrowsContainer = document.createElement('span');
+  arrowsContainer.className = 'icon';
+
+  arrowsContainer.addEventListener('click', () => {
+    const item = getObjectById(canvas, imageID);
+    canvas.bringToFront(item);
+
+    document.getElementById('layers').removeChild(container);
+    document.getElementById('layers').prepend(container);
+  });
+
+  const arrows = document.createElement('i');
+  arrows.className = 'fa fa-arrows';
+
+  arrowsContainer.appendChild(arrows);
+
+  const trashContainer = document.createElement('span');
+  trashContainer.className = 'icon';
+
+  trashContainer.addEventListener('click', () => {
+    const item = getObjectById(canvas, imageID);
+    canvas.remove(item);
+    document.getElementById('layers').removeChild(container);
+  });
+
+  const trash = document.createElement('i');
+  trash.className = 'fa fa-trash';
+
+  trashContainer.appendChild(trash);
+
+  container.appendChild(arrowUpContainer);
+  container.appendChild(arrowDownContainer);
+  container.appendChild(arrowsContainer);
+  container.appendChild(trashContainer);
+  container.appendChild(document.createTextNode(imageName.toString()));
+
+  document.getElementById('layers').prepend(container);
+};
